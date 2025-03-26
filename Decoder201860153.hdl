@@ -1,0 +1,13 @@
+CHIP Decoder201860153 {
+    IN A, B, C, D;
+    OUT a, b, c, d, e, f, g;
+
+    PARTS:
+    SegmentA(A=A, B=B, C=C, D=D, out=a);
+    SegmentB(A=A, B=B, C=C, D=D, out=b);
+    SegmentC(A=A, B=B, C=C, D=D, out=c);
+    SegmentD(A=A, B=B, C=C, D=D, out=d);
+    SegmentE(A=A, B=B, C=C, D=D, out=e);
+    SegmentF(A=A, B=B, C=C, D=D, out=f);
+    SegmentG(A=A, B=B, C=C, D=D, out=g);
+}
