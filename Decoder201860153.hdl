@@ -3,11 +3,13 @@ CHIP Decoder201860153 {
     OUT a, b, c, d, e, f, g;
 
     PARTS:
-    SegmentA(A=A, B=B, C=C, D=D, out=a);
-    SegmentB(A=A, B=B, C=C, D=D, out=b);
-    SegmentC(A=A, B=B, C=C, D=D, out=c);
-    SegmentD(A=A, B=B, C=C, D=D, out=d);
-    SegmentE(A=A, B=B, C=C, D=D, out=e);
-    SegmentF(A=A, B=B, C=C, D=D, out=f);
-    SegmentG(A=A, B=B, C=C, D=D, out=g);
+    Inc16(in=currentCount, out=nextCount);
+    Mux16(a=nextCount, b=false[16], sel=reset, out=counter);
+    DecoderSegment(in=countex[0...3], out=a);
+    DecoderSegment(in=countex[0...3], out=b);
+    DecoderSegment(in=countex[0...3], out=c);
+    DecoderSegment(in=countex[0...3], out=d);
+    DecoderSegment(in=countex[0...3], out=e);
+    DecoderSegment(in=countex[0...3], out=f);
+    DecoderSegment(in=countex[0...3], out=g);
 }
