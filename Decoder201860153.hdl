@@ -1,20 +1,24 @@
 CHIP Decoder201860153 {
-    IN A, B, C, D, reset;
-    OUT a, b, c, d, e, f, g;
+    IN reset;                // Input: reset signal
+    OUT a, b, c, d, e, f, g; // Output: 7-segment display control lines
 
     PARTS:
-    // Assume currentCount is defined elsewhere
+    // Assume currentCount is defined externally and provides the current 16-bit count value
     Inc16(in=currentCount, out=nextCount);
 
-    // Use a constant zero value instead of false[16]
+    // A 16-bit constant zero value
+    False16(out=zero);
+
+    // If reset is high, output zero; otherwise output the incremented value
     Mux16(a=nextCount, b=zero, sel=reset, out=counter);
 
-    // Pass the lowest 4 bits of counter to the 7-segment decoder
-    DecoderSegment(in=counter[0..3], out=a);
-    DecoderSegment(in=counter[0..3], out=b);
-    DecoderSegment(in=counter[0..3], out=c);
-    DecoderSegment(in=counter[0..3], out=d);
-    DecoderSegment(in=counter[0..3], out=e);
-    DecoderSegment(in=counter[0..3], out=f);
-    DecoderSegment(in=counter[0..3], out=g);
+    // Explicitly extract the lower 4 bits of the counter for decoding
+    And(a=counter[0], b=true, out=bit0);
+    And(a=counter[1], b=true, out=bit1);
+    And(a=counter[2], b=true, out=bit2);
+    And(a=counter[3], b=true, out=bit3);
+
+    // Send the 4-bit binary input into the 7-segment decoder
+    DecoderSegment(in[0]=bit0, in[1]=bit1, in[2]=bit2, in[3]=bit3,
+                   outA=a, outB=b, outC=c, outD=d, outE=e, outF=f, outG=g);
 }
