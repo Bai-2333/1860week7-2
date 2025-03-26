@@ -3,6 +3,6 @@ CHIP SegmentC {
     OUT out;
 
     PARTS:
-    Or(a=B, b=D, out=or1);
-    And(a=or1, b=notC, out=out);
+    And(a=B, b=C, out=and1);
+    Or(a=and1, b=D, out=out);
 }
