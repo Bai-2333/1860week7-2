@@ -1,15 +1,20 @@
 CHIP Decoder201860153 {
-    IN A, B, C, D;
+    IN A, B, C, D, reset;
     OUT a, b, c, d, e, f, g;
 
     PARTS:
+    // Assume currentCount is defined elsewhere
     Inc16(in=currentCount, out=nextCount);
-    Mux16(a=nextCount, b=false[16], sel=reset, out=counter);
-    DecoderSegment(in=countex[0...3], out=a);
-    DecoderSegment(in=countex[0...3], out=b);
-    DecoderSegment(in=countex[0...3], out=c);
-    DecoderSegment(in=countex[0...3], out=d);
-    DecoderSegment(in=countex[0...3], out=e);
-    DecoderSegment(in=countex[0...3], out=f);
-    DecoderSegment(in=countex[0...3], out=g);
+
+    // Use a constant zero value instead of false[16]
+    Mux16(a=nextCount, b=zero, sel=reset, out=counter);
+
+    // Pass the lowest 4 bits of counter to the 7-segment decoder
+    DecoderSegment(in=counter[0..3], out=a);
+    DecoderSegment(in=counter[0..3], out=b);
+    DecoderSegment(in=counter[0..3], out=c);
+    DecoderSegment(in=counter[0..3], out=d);
+    DecoderSegment(in=counter[0..3], out=e);
+    DecoderSegment(in=counter[0..3], out=f);
+    DecoderSegment(in=counter[0..3], out=g);
 }
