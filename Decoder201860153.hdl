@@ -1,24 +1,19 @@
 CHIP Decoder201860153 {
-    IN reset;                // Input: reset signal
-    OUT a, b, c, d, e, f, g; // Output: 7-segment display control lines
+    IN A, B, C, D, reset;
+    OUT a, b, c, d, e, f, g;
 
     PARTS:
-    // Assume currentCount is defined externally and provides the current 16-bit count value
+    // 当前计数值
+    // 用于模拟自动递增
+    // 假设 currentCount 是由某个寄存器或上一个模块传入的
     Inc16(in=currentCount, out=nextCount);
 
-    // A 16-bit constant zero value
+    // False16模块：用于生成全0
     False16(out=zero);
 
-    // If reset is high, output zero; otherwise output the incremented value
+    // 根据 reset 信号决定是否重置为0
     Mux16(a=nextCount, b=zero, sel=reset, out=counter);
 
-    // Explicitly extract the lower 4 bits of the counter for decoding
-    And(a=counter[0], b=true, out=bit0);
-    And(a=counter[1], b=true, out=bit1);
-    And(a=counter[2], b=true, out=bit2);
-    And(a=counter[3], b=true, out=bit3);
-
-    // Send the 4-bit binary input into the 7-segment decoder
-    DecoderSegment(in[0]=bit0, in[1]=bit1, in[2]=bit2, in[3]=bit3,
-                   outA=a, outB=b, outC=c, outD=d, outE=e, outF=f, outG=g);
+    // 使用最低4位作为输入传给7段译码器
+    DecoderSegment(in=counter[0..3], outA=a, outB=b, outC=c, outD=d, outE=e, outF=f, outG=g);
 }
